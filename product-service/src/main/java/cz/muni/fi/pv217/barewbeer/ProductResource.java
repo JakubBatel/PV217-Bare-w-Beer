@@ -45,7 +45,7 @@ public class ProductResource {
     @GET
     @Path("/{id}")
     public Response getProduct(@PathParam long id) {
-        Product product = Product.findById(id);
+        Product product = productService.findById(id);
 
         if (product == null) {
             return Response
@@ -60,7 +60,7 @@ public class ProductResource {
     @GET
     @Path("/list")
     public Response listProducts() {
-        List<Product> products = Product.listAll();
+        List<Product> products = productService.listAll();
         
         return Response.ok(products).build();
     }
