@@ -5,7 +5,6 @@
   <groupId>muni.fi.pv217</groupId>
   <artifactId>product-service</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -18,7 +17,6 @@
     <quarkus.platform.version>2.4.2.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
-  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -30,7 +28,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -74,6 +71,10 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-container-image-docker</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -83,7 +84,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -120,7 +120,6 @@
       </plugin>
     </plugins>
   </build>
-
   <profiles>
     <profile>
       <id>native</id>

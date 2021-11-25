@@ -3,6 +3,7 @@ package cz.muni.fi.pv217.barewbeer.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,14 +25,15 @@ public class Product {
    
     public BigDecimal price;
    
-    @Enumerated(EnumType.STRING)
-    public List<Category> categories;
+    // @ElementCollection(targetClass = Category.class)
+    // // @Enumerated(EnumType.STRING)
+    // public List<Category> categories;
 
     public void merge(Product product) {
         name = product.name;
         description = product.description;
         price = product.price;
-        categories = product.categories;
+        // categories = product.categories;
     }
 
 }

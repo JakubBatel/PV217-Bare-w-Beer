@@ -18,7 +18,7 @@ import cz.muni.fi.pv217.barewbeer.service.ProductService;
 public class ProductResource {
 
     @Inject
-    private ProductService productService;
+    ProductService productService;
 
     @PUT
     @Path("/create")

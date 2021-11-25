@@ -18,7 +18,7 @@ public class ProductService {
     // private static Logger log = Logger.getLogger(ProductService.class);
 
     @Inject
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Transactional
     public Product createProduct(Product product) {
