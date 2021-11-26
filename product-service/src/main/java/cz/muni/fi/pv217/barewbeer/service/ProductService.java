@@ -13,6 +13,7 @@ import cz.muni.fi.pv217.barewbeer.entity.Product;
 import cz.muni.fi.pv217.barewbeer.repository.ProductRepository;
 
 @ApplicationScoped
+@Transactional
 public class ProductService {
 
     // private static Logger log = Logger.getLogger(ProductService.class);
@@ -20,23 +21,19 @@ public class ProductService {
     @Inject
     ProductRepository productRepository;
 
-    @Transactional
     public Product createProduct(Product product) {
         productRepository.persist(product);
         return product;
     }
 
-    @Transactional
     public Product findById(long id) {
         return productRepository.findById(id);
     }
 
-    @Transactional
     public List<Product> listAll() {
         return productRepository.listAll();
     }
 
-    @Transactional
     public Product updateProduct(long id, Product update) {
         Product product = productRepository.findById(id);
 
@@ -49,7 +46,6 @@ public class ProductService {
         return product;
     }
     
-    @Transactional
     public Product deleteProduct(long id) {
         Product product = productRepository.findById(id);
 
