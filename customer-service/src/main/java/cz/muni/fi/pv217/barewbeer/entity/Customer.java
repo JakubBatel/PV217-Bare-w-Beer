@@ -1,4 +1,4 @@
-package muni.fi.pv217.entity;
+package cz.muni.fi.pv217.barewbeer.entity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
@@ -8,8 +8,19 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 public class Customer extends PanacheEntity {
-    @NotNull(message = "Username cannot be null")
-    @NotEmpty(message = "Username cannot be empty")
+
+    public Customer(String username, String firstName, String surname, String email, String phone) {
+        this.username = username;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public Customer() {
+
+    }
+
     public String username;
 
     @NotNull(message = "First name cannot be null")
@@ -25,4 +36,12 @@ public class Customer extends PanacheEntity {
     public String email;
 
     public String phone;
+
+    public void merge(Customer customer) {
+        username = customer.username;
+        firstName = customer.firstName;
+        surname = customer.surname;
+        email = customer.email;
+        phone = customer.phone;
+    }
 }
