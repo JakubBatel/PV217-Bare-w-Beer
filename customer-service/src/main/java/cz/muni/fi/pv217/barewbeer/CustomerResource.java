@@ -1,17 +1,15 @@
 package cz.muni.fi.pv217.barewbeer;
 
-import java.util.List;
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-
-
 import cz.muni.fi.pv217.barewbeer.entity.Customer;
 import cz.muni.fi.pv217.barewbeer.service.CustomerService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/customers")
 public class CustomerResource {
@@ -20,9 +18,10 @@ public class CustomerResource {
 
     @PUT
     @Path("/create")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Counted(name = "customersCount", description = "How many unique customers bought something at our store so far.")
     public Response createCustomer(Customer customer) {
         Customer created = customerService.createCustomer(customer);
-
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
@@ -70,5 +69,4 @@ public class CustomerResource {
 
         return Response.ok(customers).build();
     }
-
 }
