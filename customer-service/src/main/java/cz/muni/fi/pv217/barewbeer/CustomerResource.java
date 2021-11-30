@@ -16,17 +16,18 @@ public class CustomerResource {
     @Inject
     CustomerService customerService;
 
-    @PUT
-    @Path("/create")
+    @POST
+    @Path("/")
     @Produces(MediaType.TEXT_PLAIN)
-    @Counted(name = "customersCount", description = "How many unique customers bought something at our store so far.")
+    @Counted(name = "customersCount",
+            description = "How many unique customers bought something at our store so far.")
     public Response createCustomer(Customer customer) {
         Customer created = customerService.createCustomer(customer);
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
-    @POST
-    @Path("/{id}/update")
+    @PUT
+    @Path("/{id}")
     public Response updateCustomer(@PathParam long id, Customer update) {
         Customer updated = customerService.updateCustomer(id, update);
 
@@ -37,10 +38,10 @@ public class CustomerResource {
         return Response.ok(updated).build();
     }
 
-    @POST
-    @Path("/{id}/delete")
+    @DELETE
+    @Path("/{id}")
     public Response deleteCustomer(@PathParam long id) {
-       boolean success = customerService.deleteCustomer(id);
+        boolean success = customerService.deleteCustomer(id);
 
         if (!success) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -63,7 +64,7 @@ public class CustomerResource {
     }
 
     @GET
-    @Path("/list")
+    @Path("/")
     public Response listAllCustomers() {
         List<Customer> customers = customerService.listAll();
 
