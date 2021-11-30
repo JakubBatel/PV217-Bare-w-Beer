@@ -16,16 +16,16 @@ public class OrderResource {
     @Inject
     OrderService orderService;
 
-    @PUT
-    @Path("/create")
+    @POST
+    @Path("/")
     public Response createOrder(Order order) {
         Order created = orderService.createOrder(order);
 
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
-    @POST
-    @Path("/{id}/update")
+    @PUT
+    @Path("/{id}")
     public Response updateOrder(@PathParam long id, Order update) {
         Order updated = orderService.updateOrder(id, update);
 
@@ -50,7 +50,7 @@ public class OrderResource {
     }
 
     @GET
-    @Path("/list")
+    @Path("/")
     public Response listOrders() {
         List<Order> orders = orderService.listAll();
 
