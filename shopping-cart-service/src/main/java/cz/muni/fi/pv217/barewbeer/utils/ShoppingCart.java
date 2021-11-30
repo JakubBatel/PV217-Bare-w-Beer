@@ -1,6 +1,7 @@
 package cz.muni.fi.pv217.barewbeer.utils;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ShoppingCart {
     private ArrayList<ShoppingCartItem> items;
@@ -14,10 +15,15 @@ public class ShoppingCart {
     }
 
     public void addItem(ShoppingCartItem item) {
-        this.items.add(item);
+        items.add(item);
     }
 
     public boolean removeItem(ShoppingCartItem item) {
-        return this.items.remove(item);
+        return items.remove(item);
+    }
+
+    public boolean removeItem(long productId) {
+        ShoppingCartItem item = items.stream().filter(x -> x.getProductId() == productId).collect(Collectors.toList()).get(0);
+        return items.remove(item);
     }
 }
