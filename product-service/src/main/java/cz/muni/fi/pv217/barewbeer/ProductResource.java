@@ -20,16 +20,16 @@ public class ProductResource {
     @Inject
     ProductService productService;
 
-    @PUT
-    @Path("/create")
+    @POST
+    @Path("/")
     public Response createProduct(Product product) {
         Product created = productService.createProduct(product);
 
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
-    @POST
-    @Path("/{id}/update")
+    @PUT
+    @Path("/{id}")
     public Response updateProduct(@PathParam long id, Product update) {
         Product updated = productService.updateProduct(id, update);
 
@@ -58,7 +58,7 @@ public class ProductResource {
     }
 
     @GET
-    @Path("/list")
+    @Path("/")
     public Response listProducts() {
         List<Product> products = productService.listAll();
         
