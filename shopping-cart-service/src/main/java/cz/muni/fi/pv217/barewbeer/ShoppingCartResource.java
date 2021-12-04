@@ -16,11 +16,13 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import cz.muni.fi.pv217.barewbeer.client.Order;
 import cz.muni.fi.pv217.barewbeer.client.OrderItem;
 import cz.muni.fi.pv217.barewbeer.client.OrderServiceClient;
+import cz.muni.fi.pv217.barewbeer.client.Product;
 import cz.muni.fi.pv217.barewbeer.client.ProductServiceClient;
 import cz.muni.fi.pv217.barewbeer.dto.AddItemToCartDTO;
 import cz.muni.fi.pv217.barewbeer.dto.UpdateItemCountDTO;
 import cz.muni.fi.pv217.barewbeer.service.ShoppingCartService;
 import cz.muni.fi.pv217.barewbeer.utils.ShoppingCart;
+import cz.muni.fi.pv217.barewbeer.utils.ShoppingCartItem;
 
 @Path("/cart")
 public class ShoppingCartResource {
@@ -40,10 +42,16 @@ public class ShoppingCartResource {
     @Path("/{customerId}/add")
     public Response addItemToCart(@PathParam long customerId, AddItemToCartDTO addItemToCartDTO) {
         Response productResponse = productClient.getProduct(addItemToCartDTO.productId);
+        Product product = productResponse.readEntity(Product.class);
 
-        // TODO productResponse -> Item,
-        // shoppingCartService.addItemToShoppingCart(customerId, item);
-
+        ShoppingCartItem cartItem = new ShoppingCartItem(
+            addItemToCartDTO.productId,
+            product.name,
+            product.description,
+            addItemToCartDTO.price,
+            addItemToCartDTO.count
+        );
+        shoppingCartService.addItemToShoppingCart(customerId, cartItem);
         return Response.ok().build();
     }
 
@@ -82,9 +90,10 @@ public class ShoppingCartResource {
         Order newOrder = new Order();
         newOrder.items = orderItems;
         newOrder.creationTimestamp = LocalDateTime.now();
-        //newOrder.confirmed = true;
-        //newOrder.shippedOut = false;
-        Response orderResponse = orderClient.createOrder(newOrder);
+        newOrder.confirmed = false;
+        newOrder.shippedOut = false;
+
+        orderClient.createOrder(newOrder);
 
         shoppingCartService.clearShoppingCart(customerId);
 
