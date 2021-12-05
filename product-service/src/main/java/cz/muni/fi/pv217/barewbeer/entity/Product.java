@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,12 +29,15 @@ public class Product {
     @NotNull
     @NotEmpty
     @NotBlank
-    @Column(name = "product_name")
+    @Column(name = "product_name", nullable = false)
     public String name;
 
-    @Column(name = "product_description")
+    @Column(name = "product_description", nullable = false)
     public String description;
 
+    @NotNull
+    @Min(0)
+    @Column(nullable = false)
     public BigDecimal price;
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = Category.class)
