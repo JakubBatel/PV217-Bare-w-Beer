@@ -48,7 +48,7 @@ public class ShoppingCartResource {
             addItemToCartDTO.productId,
             product.name,
             product.description,
-            addItemToCartDTO.price,
+            product.price,
             addItemToCartDTO.count
         );
         shoppingCartService.addItemToShoppingCart(customerId, cartItem);
