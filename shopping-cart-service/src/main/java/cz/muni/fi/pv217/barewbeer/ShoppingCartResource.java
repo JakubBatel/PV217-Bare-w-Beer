@@ -10,6 +10,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
@@ -72,6 +74,8 @@ public class ShoppingCartResource {
     }
 
     @PUT
+    @Retry(maxRetries = 2)
+    @Fallback(fallbackMethod = "fallbackOrderShoppingCart")
     @Path("/{customerId}/order")
     public Response orderShoppingCart(@PathParam long customerId) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -98,6 +102,10 @@ public class ShoppingCartResource {
         shoppingCartService.clearShoppingCart(customerId);
 
         return Response.ok(newOrder).build();
+    }
+
+    public Response fallbackOrderShoppingCart(long customerId) {
+        return Response.status(400, "Bad request, Order was not created successfully").build();
     }
 
     @PUT
