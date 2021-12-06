@@ -18,7 +18,7 @@ public class OrderItem {
 
     public long productId;
 
-    public BigDecimal pricePerUnit;
+    public long pricePerUnit;
 
     public int count;
 

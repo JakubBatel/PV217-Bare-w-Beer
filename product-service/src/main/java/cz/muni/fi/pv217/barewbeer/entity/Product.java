@@ -1,18 +1,10 @@
 package cz.muni.fi.pv217.barewbeer.entity;
 
-import java.math.BigDecimal;
+import cz.muni.fi.pv217.barewbeer.util.Category;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import cz.muni.fi.pv217.barewbeer.util.Category;
 
 @Entity
 @Table(name = "Products")
@@ -26,7 +18,7 @@ public class Product {
 
     public String description;
 
-    public BigDecimal price;
+    public long price;
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = Category.class)
     @Enumerated(EnumType.STRING)

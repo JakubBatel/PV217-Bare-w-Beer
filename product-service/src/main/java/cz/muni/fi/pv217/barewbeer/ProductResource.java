@@ -1,6 +1,9 @@
 package cz.muni.fi.pv217.barewbeer;
 
-import java.util.List;
+import cz.muni.fi.pv217.barewbeer.entity.Product;
+import cz.muni.fi.pv217.barewbeer.service.ProductService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -8,11 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
-
-import cz.muni.fi.pv217.barewbeer.entity.Product;
-import cz.muni.fi.pv217.barewbeer.service.ProductService;
+import java.util.List;
 
 @Path("/products")
 public class ProductResource {
@@ -22,9 +21,9 @@ public class ProductResource {
 
     @POST
     @Path("/")
+    @Counted(name = "productCount", description = "Number of different products we offer in our e-shop")
     public Response createProduct(Product product) {
         Product created = productService.createProduct(product);
-
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 
