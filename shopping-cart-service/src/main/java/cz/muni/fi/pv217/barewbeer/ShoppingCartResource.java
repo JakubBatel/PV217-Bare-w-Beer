@@ -10,17 +10,21 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import cz.muni.fi.pv217.barewbeer.client.Order;
 import cz.muni.fi.pv217.barewbeer.client.OrderItem;
 import cz.muni.fi.pv217.barewbeer.client.OrderServiceClient;
+import cz.muni.fi.pv217.barewbeer.client.Product;
 import cz.muni.fi.pv217.barewbeer.client.ProductServiceClient;
 import cz.muni.fi.pv217.barewbeer.dto.AddItemToCartDTO;
 import cz.muni.fi.pv217.barewbeer.dto.UpdateItemCountDTO;
 import cz.muni.fi.pv217.barewbeer.service.ShoppingCartService;
 import cz.muni.fi.pv217.barewbeer.utils.ShoppingCart;
+import cz.muni.fi.pv217.barewbeer.utils.ShoppingCartItem;
 
 @Path("/cart")
 public class ShoppingCartResource {
@@ -40,10 +44,16 @@ public class ShoppingCartResource {
     @Path("/{customerId}/add")
     public Response addItemToCart(@PathParam long customerId, AddItemToCartDTO addItemToCartDTO) {
         Response productResponse = productClient.getProduct(addItemToCartDTO.productId);
+        Product product = productResponse.readEntity(Product.class);
 
-        // TODO productResponse -> Item,
-        // shoppingCartService.addItemToShoppingCart(customerId, item);
-
+        ShoppingCartItem cartItem = new ShoppingCartItem(
+            addItemToCartDTO.productId,
+            product.name,
+            product.description,
+            product.price,
+            addItemToCartDTO.count
+        );
+        shoppingCartService.addItemToShoppingCart(customerId, cartItem);
         return Response.ok().build();
     }
 
@@ -64,6 +74,8 @@ public class ShoppingCartResource {
     }
 
     @PUT
+    @Retry(maxRetries = 2)
+    @Fallback(fallbackMethod = "fallbackOrderShoppingCart")
     @Path("/{customerId}/order")
     public Response orderShoppingCart(@PathParam long customerId) {
         List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -82,13 +94,18 @@ public class ShoppingCartResource {
         Order newOrder = new Order();
         newOrder.items = orderItems;
         newOrder.creationTimestamp = LocalDateTime.now();
-        //newOrder.confirmed = true;
-        //newOrder.shippedOut = false;
-        Response orderResponse = orderClient.createOrder(newOrder);
+        newOrder.confirmed = false;
+        newOrder.shippedOut = false;
+
+        orderClient.createOrder(newOrder);
 
         shoppingCartService.clearShoppingCart(customerId);
 
-        return Response.ok().build();
+        return Response.ok(newOrder).build();
+    }
+
+    public Response fallbackOrderShoppingCart(long customerId) {
+        return Response.status(400, "Bad request, Order was not created successfully").build();
     }
 
     @PUT
