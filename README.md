@@ -1,5 +1,16 @@
 # PV217 Bare w/ Beer
 
+Bare with beer is a beer eshop. Example use scenario can be the following
+0. Some manager add list of the products to the system.
+1. New customer is created in the system.
+2. The customer lists the available products.
+3. The customer adds some items to the shopping cart.
+4. The customer creates an order.
+5. The manager accepts the order.
+
+Microservices are propriate for this use case because they provide better scaling options than the monolith application. For example the product service might be overloaded sooner than order service because a lot of people will browse the products but just few of them will actually buy something.
+On the other hand microservices brings additional complexity to the project and small eshop like this one should work without any trouble even when the monolith solution is used.
+
 ## Swagger
 - Customer service
     - Open API scheme: http://localhost:8080/swagger/
