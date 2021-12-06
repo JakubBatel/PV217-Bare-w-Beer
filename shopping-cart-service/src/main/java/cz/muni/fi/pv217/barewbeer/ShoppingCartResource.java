@@ -97,7 +97,7 @@ public class ShoppingCartResource {
 
         shoppingCartService.clearShoppingCart(customerId);
 
-        return Response.ok().build();
+        return Response.ok(newOrder).build();
     }
 
     @PUT

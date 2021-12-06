@@ -36,7 +36,13 @@ public class ShoppingCartService {
             return false;
         }
 
-        return shoppingCarts.get(customerId).removeItem(productId);
+        shoppingCarts.get(customerId).removeItem(productId);
+
+        if (shoppingCarts.get(customerId).getItems().size() == 0) {
+            shoppingCarts.remove(customerId);
+        }
+
+        return true;
     }
 
     public boolean clearShoppingCart(long customerId) {
