@@ -1,20 +1,34 @@
 package cz.muni.fi.pv217.barewbeer.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "customers")
 public class Customer {
 
     @Id
     @GeneratedValue
     public Long id;
 
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Column(nullable = false)
     public String firstName;
 
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Column(nullable = false)
     public String surname;
 
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Column(nullable = false)
     public String email;
 
     public String phone;

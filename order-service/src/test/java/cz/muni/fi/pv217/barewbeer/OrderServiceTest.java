@@ -17,7 +17,7 @@ public class OrderServiceTest {
     @Test
     public void testCreateOrder() {
         given()
-            .body("{\"confirmed\": false, \"shippedOut\": \"false\", \"items\": [{\"productId\": 1, \"pricePerUnit\": 12345.67, \"count\": 10}]}")
+            .body("{\"confirmed\": false, \"shippedOut\": \"false\", \"items\": [{\"productId\": 1, \"pricePerUnit\": 12345, \"count\": 10}]}")
             .contentType(ContentType.JSON)
         .when()
             .post("/orders")
@@ -27,7 +27,7 @@ public class OrderServiceTest {
             .body("shippedOut", equalTo(false))
             .body("items.size()", is(1))
             .body("items[0].productId", equalTo(1))
-            .body("items[0].pricePerUnit", equalTo(12345.67F))
+            .body("items[0].pricePerUnit", equalTo(12345))
             .body("items[0].count", equalTo(10));
     }
 

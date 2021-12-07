@@ -7,7 +7,6 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public class CustomerResource {
 
     @POST
     @Path("/")
-    @Produces(MediaType.TEXT_PLAIN)
     @Counted(name = "customersCount",
             description = "How many unique customers bought something at our store so far.")
     public Response createCustomer(Customer customer) {
