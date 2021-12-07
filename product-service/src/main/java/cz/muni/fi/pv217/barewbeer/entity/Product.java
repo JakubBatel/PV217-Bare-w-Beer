@@ -2,7 +2,6 @@ package cz.muni.fi.pv217.barewbeer.entity;
 
 import cz.muni.fi.pv217.barewbeer.util.Category;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -18,7 +17,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import cz.muni.fi.pv217.barewbeer.util.Category;
 
 @Entity
 @Table(name = "Products")

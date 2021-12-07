@@ -31,8 +31,8 @@ public class OrderResource {
     public Response createOrder(Order order) {
         Order created = orderService.createOrder(order);
         activeOrders += created.confirmed && !created.shippedOut ? 1 : 0;
-        if (created.shippedOut){
-            for (var beer: created.items) {
+        if (created.shippedOut) {
+            for (var beer : created.items) {
                 shippedBeers += beer.count;
                 earnings += beer.pricePerUnit * beer.count;
             }
@@ -45,8 +45,8 @@ public class OrderResource {
     public Response updateOrder(@PathParam long id, Order update) {
         Order updated = orderService.updateOrder(id, update);
         activeOrders += updated.confirmed && !updated.shippedOut ? 1 : 0;
-        if (updated.shippedOut){
-            for (var beer: update.items) {
+        if (updated.shippedOut) {
+            for (var beer : update.items) {
                 shippedBeers += beer.count;
                 earnings += beer.pricePerUnit * beer.count;
             }
@@ -75,17 +75,38 @@ public class OrderResource {
         return Response.ok(orders).build();
     }
 
+    @PUT
+    @Path("/{id}/confirm")
+    public Response confirmOrder(@PathParam long id) {
+        Order order = orderService.findById(id);
+
+        if (order == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(String.format("Order for id %d not found.", id)).build();
+        }
+
+        if (order.confirmed) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(String.format("Order with id %d was already confirmed.", id)).build();
+        }
+
+        Order confirmedOrder = orderService.confirmOrder(id);
+        return Response.ok(confirmedOrder).build();
+    }
+
     @Gauge(name = "earnings", description = "How much money we have made so far", unit = "czk")
     public Long earnings() {
         return earnings;
     }
 
-    @Gauge(name = "shippedBeers", description = "Number of bottles of beer we have sold so far", unit = "amount")
+    @Gauge(name = "shippedBeers", description = "Number of bottles of beer we have sold so far",
+            unit = "amount")
     public Long shippedBeers() {
         return shippedBeers;
     }
 
-    @Gauge(name = "activeOrders", description = "Number of currently active orders", unit = "amount")
+    @Gauge(name = "activeOrders", description = "Number of currently active orders",
+            unit = "amount")
     public Long activeOrders() {
         return activeOrders;
     }

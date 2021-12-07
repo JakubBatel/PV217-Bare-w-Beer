@@ -51,4 +51,21 @@ public class OrderService {
         boolean deleted = orderRepository.deleteById(id);
         return deleted ? order : null;
     }
+
+    public Order confirmOrder(long id) {
+        Order order = orderRepository.findById(id);
+
+        if (order == null) {
+            throw new NotFoundException(String.format("Order with id %d not found.", id));
+        }
+
+        if (order.confirmed) {
+            throw new RuntimeException(String.format("Order with id %d was already confirmed.", id));
+        }
+
+        order.confirmed = true;
+        orderRepository.persist(order);
+
+        return order;
+    }
 }
