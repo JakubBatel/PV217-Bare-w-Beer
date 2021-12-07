@@ -11,6 +11,12 @@ Bare with beer is a beer eshop. Example use scenario can be the following
 Microservices are propriate for this use case because they provide better scaling options than the monolith application. For example the product service might be overloaded sooner than order service because a lot of people will browse the products but just few of them will actually buy something.
 On the other hand microservices brings additional complexity to the project and small eshop like this one should work without any trouble even when the monolith solution is used.
 
+## Metrics
+- Smallrye metrics: http://localhost:808X/q/metrics
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000
+- Login and password is always "admin"
+
 ## Swagger
 - Customer service
     - Open API scheme: http://localhost:8080/swagger/
